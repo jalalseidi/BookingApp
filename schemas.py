@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class ServiceCreate(BaseModel):
     name: str
@@ -9,8 +10,8 @@ class Service(BaseModel):
     name: str
     duration_minutes: int
 
-    class config:
-        orm_mode = True
+    class Config:
+        from_attributes = True
 
 class CustomerCreate(BaseModel):
     name: str
@@ -21,5 +22,19 @@ class Customer(BaseModel):
     name: str
     email: str
 
-    class config:
-        orm_mode = True
+    class Config:
+        from_attributes = True
+
+class BookingBase(BaseModel):
+    customer_id: int
+    service_id: int
+    booking_time: datetime
+
+class BookingCreate(BookingBase):
+    pass
+
+class Booking(BookingBase):
+    id: int
+
+    class Config:
+        from_attributes = True
