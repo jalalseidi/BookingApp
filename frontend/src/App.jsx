@@ -1,10 +1,10 @@
 import React from 'react';
-import ServiceList from './ServiceList';
+import ServiceList from './components/ServiceList';
 
 function App() {
   return (
-    <div>
-      <h1>Barbershop Booking</h1>
+    <div className="max-w-xl mx-auto p-6">
+      <h1 className="text-2xl font-bold mb-6">Barbershop Booking</h1>
       <ServiceList />
     </div>
   );
