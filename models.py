@@ -1,6 +1,7 @@
-from sqlalchemy import Column,Integer,String
+from sqlalchemy import Column,Integer,String, ForeignKey, DateTime
 from database import Base
-from sqlalchemy import ForeignKey, DateTime
+from sqlalchemy import Enum as SQLAEnum
+import enum
 from sqlalchemy.orm import relationship
 
 class Service(Base):
@@ -16,6 +17,20 @@ class Customer(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String, nullable=False)
     email = Column(String, unique=True, index=True, nullable=False)
+    phone_number = Column(String, nullable=True)
+
+class UserRole(str, enum.Enum):
+    customer = "customer"
+    barber = "barber"
+
+class User(Base):
+    __tablename__ = 'user'
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    password_hash = Column(String, nullable=False)
+    role = Column(SQLAEnum(UserRole), nullable=False)
 
 class Booking(Base):
     __tablename__ = 'booking'

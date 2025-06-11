@@ -4,15 +4,18 @@ from database import SessionLocal, engine
 import uvicorn
 import models, schemas
 from models import Service as ServiceModel
-from schemas import ServiceCreate, Service, Booking
 from typing import List
 from models import Customer as CustomerModel
-from schemas import CustomerCreate, Customer
+from schemas import CustomerCreate, Customer, ServiceCreate, Service, Booking
+from fastapi import APIRouter, Depends, HTTPException
+from sqlalchemy.orm import Session
 from datetime import timedelta
+from auth_routes import router as auth_router
 
 
 models.Base.metadata.create_all(bind=engine)
 app = FastAPI()
+app.include_router(auth_router)
 
 def get_db():
     db = SessionLocal()
@@ -26,7 +29,8 @@ def root():
     return {"message": "Barbershop API is running."}
 
 
-@app.post("/booking/", response_model=schemas.Booking)
+
+@app.post("/api/booking/", response_model=schemas.Booking)
 def create_booking(booking: schemas.BookingCreate, db: Session = Depends(get_db)):
     # Validate customer exists
     customer = db.query(models.Customer).filter(models.Customer.id == booking.customer_id).first()
@@ -58,7 +62,7 @@ def create_booking(booking: schemas.BookingCreate, db: Session = Depends(get_db)
     db.commit()
     db.refresh(db_booking)
     return db_booking
-@app.post("/services/", response_model=Service)
+@app.post("/api/services/", response_model=Service)
 def create_service(service: ServiceCreate, db: Session = Depends(get_db)):
     db_service = ServiceModel(**service.dict())
     db.add(db_service)
@@ -66,7 +70,7 @@ def create_service(service: ServiceCreate, db: Session = Depends(get_db)):
     db.refresh(db_service)
     return db_service
 
-@app.post("/customers/", response_model=Customer)
+@app.post("/api/customers/", response_model=Customer)
 def create_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
     db_customer = CustomerModel(**customer.dict())
     db.add(db_customer)
@@ -74,15 +78,15 @@ def create_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
     db.refresh(db_customer)
     return db_customer
 
-@app.get("/services/", response_model=List[Service])
+@app.get("/api/services/", response_model=List[Service])
 def read_services(db: Session = Depends(get_db)):
     return db.query(ServiceModel).all()
 
-@app.get("/customers/", response_model=List[Customer])
+@app.get("/api/customers/", response_model=List[Customer])
 def get_customers(db: Session = Depends(get_db)):
     return db.query(CustomerModel).all()
 
-@app.get("/bookings/", response_model=List[schemas.Booking])
+@app.get("/api/bookings/", response_model=List[schemas.Booking])
 def list_bookings(db: Session = Depends(get_db)):
     return db.query(models.Booking).all()
 

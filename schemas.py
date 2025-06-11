@@ -1,5 +1,25 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
+from enum import Enum
 from datetime import datetime
+
+class Role(str, Enum):
+    customer = "customer"
+    barber = "barber"
+
+class UserCreate(BaseModel):
+    name: str
+    email: EmailStr
+    password: str
+    role: Role
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str = "bearer"
+
 
 class ServiceCreate(BaseModel):
     name: str
@@ -16,11 +36,13 @@ class Service(BaseModel):
 class CustomerCreate(BaseModel):
     name: str
     email: str
+    phone_number: str | None = None
 
 class Customer(BaseModel):
     id: int
     name: str
     email: str
+    phone_number: str | None = None
 
     class Config:
         from_attributes = True

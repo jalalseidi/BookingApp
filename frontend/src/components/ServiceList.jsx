@@ -5,7 +5,7 @@ function ServiceList() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        fetch('/api/services')
+        fetch('/api/services/')
             .then((res) => {
                 if (!res.ok) {
                     throw new Error('Failed to fetch services');

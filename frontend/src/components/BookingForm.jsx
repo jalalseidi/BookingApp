@@ -15,7 +15,7 @@ function BookingForm() {
             .then(res => res.json())
             .then(data => setCustomers(data));
 
-        fetch("/api/services")
+        fetch("/api/services/")
             .then(res => res.json())
             .then(data => setServices(data));
     }, []);
