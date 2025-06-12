@@ -1,5 +1,3 @@
-from fastapi import FastAPI, Depends, HTTPException
-from sqlalchemy.orm import Session
 from database import SessionLocal, engine
 import uvicorn
 import models, schemas
@@ -7,14 +5,15 @@ from models import Service as ServiceModel
 from typing import List
 from models import Customer as CustomerModel
 from schemas import CustomerCreate, Customer, ServiceCreate, Service, Booking
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, FastAPI
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from auth_routes import router as auth_router
-
+from auth import require_role
+from models import User
+app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
-app = FastAPI()
 app.include_router(auth_router)
 
 def get_db():
@@ -87,7 +86,9 @@ def get_customers(db: Session = Depends(get_db)):
     return db.query(CustomerModel).all()
 
 @app.get("/api/bookings/", response_model=List[schemas.Booking])
-def list_bookings(db: Session = Depends(get_db)):
+def list_bookings(db: Session = Depends(get_db),
+    current_user: User = Depends(require_role("barber"))
+):
     return db.query(models.Booking).all()
 
 

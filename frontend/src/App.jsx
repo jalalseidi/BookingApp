@@ -2,6 +2,8 @@ import React from "react";
 import BookingForm from "./components/BookingForm";
 import ServiceList from "./components/ServiceList";
 import CustomerRegistrationForm from "./components/CustomerRegistrationForm.jsx";
+import RegisterForm from "./components/auth/RegisterForm.jsx";
+import LoginForm from "./components/auth/LoginForm.jsx";
 
 function App() {
   return (
@@ -11,6 +13,8 @@ function App() {
       <CustomerRegistrationForm />
       <hr className="my-6" />
       <ServiceList />
+      <RegisterForm/>
+      <LoginForm/>
     </div>
   );
 }
