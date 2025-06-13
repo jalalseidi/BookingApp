@@ -42,3 +42,13 @@ class Booking(Base):
 
     customer = relationship('Customer')
     service = relationship('Service')
+
+class Availability(Base):
+    __tablename__ = 'availability'
+
+    id = Column(Integer, primary_key=True, index=True)
+    barber_id = Column(Integer, ForeignKey('user.id'))
+    start_time = Column(DateTime, nullable=False)
+    end_time = Column(DateTime, nullable=False)
+
+    barber = relationship('User')

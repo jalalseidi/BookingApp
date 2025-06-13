@@ -60,3 +60,17 @@ class Booking(BookingBase):
 
     class Config:
         from_attributes = True
+
+class AvailabilityBase(BaseModel):
+    start_time: datetime
+    end_time: datetime
+
+class AvailabilityCreate(AvailabilityBase):
+    pass
+
+class Availability(AvailabilityBase):
+    id: int
+    booking_id: int
+
+    class Config:
+        from_attributes = True

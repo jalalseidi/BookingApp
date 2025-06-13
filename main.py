@@ -77,6 +77,23 @@ def create_customer(customer: CustomerCreate, db: Session = Depends(get_db)):
     db.refresh(db_customer)
     return db_customer
 
+@app.post("/api/availability/", response_model=schemas.Availability)
+def create_availability(
+    availability: schemas.AvailabilityCreate,
+    db: Session = Depends(get_db),
+    current_user: User = Depends(require_role("barber"))
+):
+    new_avail = models.Availability(
+        start_time=availability.start_time,
+        end_time=availability.end_time,
+        barber_id=current_user.id,
+    )
+    db.add(new_avail)
+    db.commit()
+    db.refresh(new_avail)
+    return new_avail
+
+
 @app.get("/api/services/", response_model=List[Service])
 def read_services(db: Session = Depends(get_db)):
     return db.query(ServiceModel).all()
@@ -90,6 +107,10 @@ def list_bookings(db: Session = Depends(get_db),
     current_user: User = Depends(require_role("barber"))
 ):
     return db.query(models.Booking).all()
+
+@app.get("/api/availability/", response_model=List[schemas.Availability])
+def list_availability(db: Session = Depends(get_db)):
+    return db.query(models.Availability).all()
 
 
 
