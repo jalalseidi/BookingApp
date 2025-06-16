@@ -22,6 +22,9 @@ function App() {
           <Route path="/login" element={<Login />} />
         </Routes>
       </main>
+      <div className="text-3xl font-bold text-blue-600">
+      Hello, Tailwind is working!
+    </div>
     </div>
   );
 }

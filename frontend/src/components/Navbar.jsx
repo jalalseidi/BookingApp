@@ -30,22 +30,20 @@ function Navbar({ onLogout }) {
     <nav className="bg-gray-800 text-white p-4 shadow-md">
       <div className="max-w-6xl mx-auto flex justify-between items-center">
         <div className="flex space-x-6">
-          <a href="/frontend/public" className="hover:text-blue-300">Home</a>
-          <a href="/services" className="hover:text-blue-300">Services</a>
-
-          {user?.role === "barber" && (
-            <>
-              <a href="/availability" className="hover:text-blue-300">Set Availability</a>
-              <a href="/api/bookings" className="hover:text-blue-300">View Bookings</a>
-            </>
-          )}
-
-          {user?.role === "customer" && (
-            <>
-              <a href="/book" className="hover:text-blue-300">Book a Service</a>
-              <a href="/my-bookings" className="hover:text-blue-300">My Bookings</a>
-            </>
-          )}
+          <a href="/" className="hover:text-blue-300">Home</a>
+<a href="/book" className="hover:text-blue-300">Services</a>
+{user?.role === "barber" && (
+  <>
+    <a href="/availability" className="hover:text-blue-300">Set Availability</a>
+    <a href="/bookings" className="hover:text-blue-300">View Bookings</a>
+  </>
+)}
+{user?.role === "customer" && (
+  <>
+    <a href="/book" className="hover:text-blue-300">Book a Service</a>
+    <a href="/bookings" className="hover:text-blue-300">My Bookings</a>
+  </>
+)}
         </div>
 
         <div className="flex items-center space-x-4">
