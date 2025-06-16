@@ -10,7 +10,7 @@ from sqlalchemy.orm import Session
 from datetime import timedelta
 from auth_routes import router as auth_router
 from auth import require_role
-from models import User
+from models import User, Availability
 app = FastAPI()
 
 models.Base.metadata.create_all(bind=engine)
